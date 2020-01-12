@@ -23,15 +23,14 @@ nb_arrivals = nb_cleanpagedata.find_all(class_='arrivalsAtStop')
 sb_arrivals = sb_cleanpagedata.find_all(class_='arrivalsAtStop')
 
 for arrival in nb_arrivals:
-    for hit in arrival.parent.strings:
-        temp.append(hit.strip(', ').replace('\xa0', ' '))
+    temp.append([list(arrival.parent.strings)[0].strip(', ').replace('\xa0', ' ')] + [x.strip(', ').replace('\xa0', ' ') for x in arrival.strings])
 
 for arrival in sb_arrivals:
-    for hit in arrival.parent.strings:
-        temp.append(hit.strip(', ').replace('\xa0', ' '))
+    temp.append([list(arrival.parent.strings)[0].strip(', ').replace('\xa0', ' ')] + [x.strip(', ').replace('\xa0', ' ') for x in arrival.strings])
 
-if (int(temp[1].split(' ')[0]) < max_time or temp[2] in distances) and temp[0] in route_names:
-    results.append([current_date, current_time, temp[0], temp[1], temp[2], temp[3]])
+for arrival in temp:
+    if (int(arrival[1].split(' ')[0]) < max_time or arrival[2] in distances) and arrival[0] in route_names:
+        results.append([current_date, current_time, arrival[0], arrival[1], arrival[2], arrival[3]])
 
 if f_writeout:
     if results:
