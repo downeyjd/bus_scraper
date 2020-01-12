@@ -9,6 +9,7 @@ nb_url = 'https://buseta.wmata.com/m/index?q=2001159' #test url, twinbrook stati
 distances = ['approaching', 'at stop'] #bus distance statuses to capture, i.e., don't log "2.3 miles" statuses
 max_time = 3 #time in minutes away from stop under which to start logging presence
 route_names = ['E4  WEST to FRIENDSHIP HEIGHTS', 'C4  EAST to PRINCE GEORGES PLAZA STATION'] #test routes to capture on bus stop pages
+#route_names = ['Route 87 - SOUTH to GREENBELT STATION', 'Route 87 - NORTH to LAUREL']
 ####################
 
 temp = []
@@ -29,7 +30,7 @@ for arrival in sb_arrivals:
     temp.append([list(arrival.parent.strings)[0].strip(', ').replace('\xa0', ' ')] + [x.strip(', ').replace('\xa0', ' ') for x in arrival.strings])
 
 for arrival in temp:
-    if (int(arrival[1].split(' ')[0]) < max_time or arrival[2] in distances) and arrival[0] in route_names:
+    if (float(arrival[1].split(' ')[0]) < max_time or arrival[2] in distances) and arrival[0] in route_names:
         results.append([current_date, current_time, arrival[0], arrival[1], arrival[2], arrival[3]])
 
 if f_writeout:
